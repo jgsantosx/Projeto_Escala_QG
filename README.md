@@ -1,107 +1,101 @@
-🪖 Projeto Escala QG - Automação de Escala de Praia (2º GMAR)
-Este projeto é uma ferramenta de automação desenvolvida em Python para gerar a escala de serviço diária de Guarda-Vidas. O sistema respeita o ciclo de 12x60, realiza a distribuição de efetivo em duplas por posto e gera um PDF formatado pronto para impressão.
+# 🎖️ Automação de Escala de Serviço - 2º GMAR
 
-🚀 Funcionalidades Principais
-Ciclo Automático: Identifica automaticamente a Ala do dia (A, B ou C).
+Este projeto é uma ferramenta desenvolvida em Python para automatizar a geração da **Escala de Praia** (Serviço Operacional). O sistema calcula o ciclo de serviço (12x60), distribui o efetivo disponível baseando-se em regras de prioridade e gera um PDF pronto para impressão.
 
-Alocação em Duplas: Preenche cada posto com 2 militares (Canga).
+## 🚀 Funcionalidades
 
-Sistema de Prioridade Tática: Preenche primeiro os postos críticos (ex: Posto 2, Posto 3) antes dos postos periféricos.
+* **Ciclo Automático:** Calcula a Ala de serviço (A, B ou C) baseado na data.
+* **Distribuição Inteligente (Híbrida):**
+    * *Prioridade Alta (VIP):* Postos críticos são preenchidos primeiro.
+    * *Ordem Geográfica:* O restante segue a ordem natural da praia (Joatinga -> Ilhas).
+* **Efetivo Variável:** Permite definir quantos militares (1, 2, 3...) cada posto necessita.
+* **Geração de PDF:** Cria um arquivo PDF com layout oficial (duas colunas) usando a biblioteca `FPDF`.
+* **Entrada de Dados:** Lê o efetivo de um arquivo Excel (`efetivo.xlsx`).
 
-Alerta de Efetivo: Se houver falta de pessoal, o sistema marca os postos descobertos em VERMELHO com o texto "FALTA EFETIVO", mantendo os postos prioritários preenchidos.
+## 🛠️ Tecnologias Utilizadas
 
-Anti-Repetição: Garante que o mesmo militar não seja escalado duas vezes no mesmo dia.
+* Python 3.x
+* **Pandas:** Manipulação de dados e lógica de tabelas.
+* **FPDF:** Geração do layout do PDF.
+* **OpenPyXL:** Leitura de arquivos Excel.
 
-PDF Oficial: Gera um arquivo visual com layout fixo (Joatinga a Ilha 05).
+## 📂 Estrutura do Projeto
 
-📂 Estrutura do Projeto
-Plaintext
-
+```text
 Projeto_Escala_QG/
 │
-├── 📂 inputs/
-│   ├── efetivo.xlsx            # LISTA DE MILITARES (Você edita aqui)
-│   └── configuracao_postos.xlsx # Regras geradas pelo sistema (Não mexer)
+├── inputs/
+│   └── efetivo.xlsx        # Lista com Nome_Guerra e Ala dos militares
 │
-├── 📂 outputs/
-│   └── escala_praia_FINAL.pdf  # O RESULTADO FINAL (O PDF gerado)
+├── outputs/
+│   └── escala_praia_FINAL.pdf  # O resultado gerado
 │
-└── 📄 sistema_escala_final.py  # O CÓDIGO (O cérebro da operação)
-🛠️ Pré-requisitos e Instalação
-Para rodar o sistema, você precisa ter o Python instalado no computador.
+├── gerador_escala.py       # O código fonte principal (Motor Lógico)
+├── README.md               # Documentação
+└── .gitignore              # Arquivos ignorados pelo Git
+⚙️ Como Configurar
+1. Pré-requisitos
+Certifique-se de ter o Python instalado. Instale as dependências:
 
-Instalar Bibliotecas: Abra o terminal (Prompt de Comando) e rode:
+Bash
 
-PowerShell
+pip install pandas openpyxl fpdf
+2. Configurar o Efetivo
+Edite o arquivo inputs/efetivo.xlsx. Ele deve conter as colunas:
 
-py -m pip install pandas openpyxl fpdf
-🕹️ Como Usar (Passo a Passo)
-1. Atualizar o Efetivo (Adicionar/Remover Militares)
-Toda a gestão de pessoal é feita pelo Excel.
+Nome_Guerra (Ex: Sd Silva)
 
-Vá na pasta inputs/.
+Ala (A, B ou C)
 
-Abra o arquivo efetivo.xlsx.
+3. Ajustar Regras de Negócio
+No arquivo gerador_escala.py, você pode editar as variáveis no topo:
 
-Adicionar: Escreva o Nome_Guerra, a Ala (A, B ou C) e a Qualificacao (GV).
+lista_prioridade_alta: Adicione aqui os postos que devem ser preenchidos primeiro.
 
-Remover: Basta apagar a linha do militar.
+config_postos: Define a quantidade de vagas (Qtd) e a ordem visual de impressão.
 
-Salvar e fechar o arquivo.
+▶️ Como Rodar
+Execute o script principal no terminal:
 
-2. Gerar a Escala
-Abra o terminal na pasta do projeto.
+Bash
 
-Execute o comando:
+python gerador_escala.py
+O PDF será gerado na pasta outputs/.
 
-PowerShell
+🚧 Próximos Passos (Roadmap)
+[ ] Implementar módulo de Permutas (Trocas de serviço).
 
-py sistema_escala_final.py
-O sistema lerá o Excel, calculará a distribuição e gerará o PDF.
+[ ] Adicionar cabeçalho com escala de Oficiais e Motoristas.
 
-3. Pegar o Resultado
-Vá na pasta outputs/.
+[ ] Interface gráfica simples (GUI).
 
-Abra o arquivo escala_praia_FINAL.pdf.
+Desenvolvido para automação administrativa militar.
 
-Verifique se há postos em VERMELHO (indicando falta de efetivo).
 
-⚙️ Configurações Avançadas (Editando o Código)
-Algumas regras estão definidas dentro do arquivo sistema_escala_final.py. Para alterá-las, clique com o botão direito no arquivo e escolha "Editar" ou abra no Bloco de Notas.
+---
 
-Alterar a Prioridade dos Postos
-Procure pela lista lista_de_prioridades no início do código.
+### 2. O Arquivo `.gitignore`
+Esse arquivo é crucial. Ele diz para o GitHub: *"Não suba arquivos inúteis, nem arquivos gerados, nem senhas"*.
 
-Os postos no topo da lista recebem soldados primeiro.
+Crie um arquivo chamado `.gitignore` (sim, começa com ponto e não tem nome antes) e cole isso dentro:
 
-Os postos que não estiverem na lista ficam por último.
+```text
+# Ignorar arquivos temporários do Python
+__pycache__/
+*.py[cod]
 
-Python
+# Ignorar arquivos gerados (Outputs)
+outputs/*.pdf
+outputs/*.xlsx
 
-lista_de_prioridades = [
-    "POSTO 2",  # <--- Prioridade Máxima
-    "POSTO 1",
-    "POSTO 3",
-    ...
-]
-Simular Data Específica
-Procure pelas variáveis DATA_INICIO e DATA_FIM dentro do "PASSO 3".
+# Ignorar arquivos de sistema
+.DS_Store
+Thumbs.db
 
-Python
+# Opcional: Ignorar o efetivo real se tiver dados sensíveis
+# Se for só teste, pode deixar comentado (#)
+# inputs/efetivo.xlsx
 
-DATA_INICIO = '2025-12-01' # Mude para a data que deseja gerar
-DATA_FIM = '2025-12-01'
-⚠️ Solução de Problemas Comuns
-Erro "Permission Denied" ao salvar:
-
-Verifique se o arquivo efetivo.xlsx ou o PDF final estão abertos. Feche-os e tente rodar de novo.
-
-PDF saiu todo vermelho:
-
-Verifique se a Data configurada no código corresponde a uma Ala que tem militares cadastrados no Excel. (Ex: Se o dia é Ala A, mas só tem nomes na Ala B no Excel, ninguém será escalado).
-
-Nomes repetidos:
-
-O sistema remove duplicatas automaticamente, mas verifique se no Excel não há nomes escritos com espaços diferentes (ex: "Silva" e "Silva ").
-
-Desenvolvido para uso interno do Quartel.
+# Ignorar credenciais (se formos usar Google API no futuro)
+credentials/*.json
+token.json

@@ -1,0 +1,20 @@
+```text
+# Ignorar arquivos temporários do Python
+__pycache__/
+*.py[cod]
+
+# Ignorar arquivos gerados (Outputs)
+outputs/*.pdf
+outputs/*.xlsx
+
+# Ignorar arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Opcional: Ignorar o efetivo real se tiver dados sensíveis
+# Se for só teste, pode deixar comentado (#)
+# inputs/efetivo.xlsx
+
+# Ignorar credenciais (se formos usar Google API no futuro)
+credentials/*.json
+token.json
