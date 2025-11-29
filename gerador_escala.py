@@ -13,7 +13,7 @@ warnings.filterwarnings("ignore", category=UserWarning)
 if not os.path.exists('inputs'): os.makedirs('inputs')
 if not os.path.exists('outputs'): os.makedirs('outputs')
 
-print("🚀 INICIANDO SISTEMA DE ESCALA (V2.7 - COM RELATÓRIO DE TROCAS)...")
+print("🚀 INICIANDO SISTEMA DE ESCALA (V3.2 - CONTROLE TOTAL)...")
 
 # ==============================================================================
 # 🧠 O JUIZ DAS PERMUTAS
@@ -43,53 +43,53 @@ ORDEM_GEOGRAFICA = [
 ]
 
 config_interno = [
-    {"Nome": "OF. CHEFE DE OPERAÇÕES",       "Qtd": 1},
-    {"Nome": "ADJUNTO AO OF. DE DIA",        "Qtd": 1},
-    {"Nome": "OF DE RAS AOS DESTACAMENTOS",  "Qtd": 1},
-    {"Nome": "COMUNICAÇÃO (24H)",            "Qtd": 2},
-    {"Nome": "COMAT/SOP",                    "Qtd": 2},
-    {"Nome": "ENCARREGADO DE MOT/MOT ASE",   "Qtd": 1},
-    {"Nome": "MOT. AR-SOS",                  "Qtd": 1},
-    {"Nome": "MOTO AQUÁTICA (24H)",          "Qtd": 2},
-    {"Nome": "SUPERVISOR 24H",               "Qtd": 1},
-    {"Nome": "GUARNIÇÃO ASE 489 (24x72)",    "Qtd": 2}
+    {"Nome": "OF. CHEFE DE OPERAÇÕES",       "Qtd": 1, "Req": "OF"},
+    {"Nome": "ADJUNTO AO OF. DE DIA",        "Qtd": 1, "Req": "SGT"},
+    {"Nome": "OF DE RAS AOS DESTACAMENTOS",  "Qtd": 1, "Req": "OF"},
+    {"Nome": "COMUNICAÇÃO (24H)",            "Qtd": 2, "Req": "COM"},
+    {"Nome": "COMAT/SOP",                    "Qtd": 2, "Req": "GV"},
+    {"Nome": "ENCARREGADO DE MOT/MOT ASE",   "Qtd": 1, "Req": "MOT"},
+    {"Nome": "MOT. AR-SOS",                  "Qtd": 1, "Req": "MOT"},
+    {"Nome": "MOTO AQUÁTICA (24H)",          "Qtd": 2, "Req": "MOT"},
+    {"Nome": "SUPERVISOR 24H",               "Qtd": 1, "Req": "SGT"},
+    {"Nome": "GUARNIÇÃO ASE 489 (24x72)",    "Qtd": 2, "Req": "GV"}
 ]
 
 config_praia = [
-    {"Nome": "JOATINGA",    "Qtd": 2}, 
-    {"Nome": "POSTO 8",     "Qtd": 2},
-    {"Nome": "CANAL 1",     "Qtd": 1}, 
-    {"Nome": "POSTO BR",    "Qtd": 0},
-    {"Nome": "CANAL 2",     "Qtd": 2}, 
-    {"Nome": "VIA 11",      "Qtd": 1},
-    {"Nome": "QUEBRA MAR",  "Qtd": 2}, 
-    {"Nome": "P. RETORNO",  "Qtd": 1},
-    {"Nome": "POSTO 1",     "Qtd": 2}, 
-    {"Nome": "ILHA 26",     "Qtd": 1},
-    {"Nome": "TROPICAL",    "Qtd": 2}, 
-    {"Nome": "ILHA 25",     "Qtd": 1},
-    {"Nome": "BOBS",        "Qtd": 2}, 
-    {"Nome": "ILHA 24",     "Qtd": 1},
-    {"Nome": "POSTO 2",     "Qtd": 2}, 
-    {"Nome": "ILHA 22",     "Qtd": 1},
-    {"Nome": "FAROL",       "Qtd": 2}, 
-    {"Nome": "ILHA 20",     "Qtd": 1},
-    {"Nome": "POSTO 3",     "Qtd": 2}, 
-    {"Nome": "ILHA 18",     "Qtd": 1},
-    {"Nome": "POSTO 3,5",   "Qtd": 2}, 
-    {"Nome": "ILHA 16",     "Qtd": 1},
-    {"Nome": "POSTO 4",     "Qtd": 2}, 
-    {"Nome": "ILHA 13",     "Qtd": 1},
-    {"Nome": "POSTO 5",     "Qtd": 2}, 
-    {"Nome": "ILHA 11",     "Qtd": 1},
-    {"Nome": "RIVIERA",     "Qtd": 2}, 
-    {"Nome": "ILHA 09",     "Qtd": 1},
-    {"Nome": "POSTO 6",     "Qtd": 2}, 
-    {"Nome": "ILHA 07",     "Qtd": 1},
-    {"Nome": "BARRABELA",   "Qtd": 2}, 
-    {"Nome": "ILHA 05",     "Qtd": 1},
-    {"Nome": "POSTO 7",     "Qtd": 2}, 
-    {"Nome": "",            "Qtd": 0}
+    {"Nome": "JOATINGA",    "Qtd": 2, "Req": "GV"}, 
+    {"Nome": "POSTO 8",     "Qtd": 2, "Req": "GV"},
+    {"Nome": "CANAL 1",     "Qtd": 1, "Req": "GV"}, 
+    {"Nome": "POSTO BR",    "Qtd": 0, "Req": "GV"},
+    {"Nome": "CANAL 2",     "Qtd": 2, "Req": "GV"}, 
+    {"Nome": "VIA 11",      "Qtd": 1, "Req": "GV"},
+    {"Nome": "QUEBRA MAR",  "Qtd": 2, "Req": "GV"}, 
+    {"Nome": "P. RETORNO",  "Qtd": 1, "Req": "GV"},
+    {"Nome": "POSTO 1",     "Qtd": 2, "Req": "GV"}, 
+    {"Nome": "ILHA 26",     "Qtd": 1, "Req": "GV"},
+    {"Nome": "TROPICAL",    "Qtd": 2, "Req": "GV"}, 
+    {"Nome": "ILHA 25",     "Qtd": 1, "Req": "GV"},
+    {"Nome": "BOBS",        "Qtd": 2, "Req": "GV"}, 
+    {"Nome": "ILHA 24",     "Qtd": 1, "Req": "GV"},
+    {"Nome": "POSTO 2",     "Qtd": 2, "Req": "GV"}, 
+    {"Nome": "ILHA 22",     "Qtd": 1, "Req": "GV"},
+    {"Nome": "FAROL",       "Qtd": 2, "Req": "GV"}, 
+    {"Nome": "ILHA 20",     "Qtd": 1, "Req": "GV"},
+    {"Nome": "POSTO 3",     "Qtd": 2, "Req": "GV"}, 
+    {"Nome": "ILHA 18",     "Qtd": 1, "Req": "GV"},
+    {"Nome": "POSTO 3,5",   "Qtd": 2, "Req": "GV"}, 
+    {"Nome": "ILHA 16",     "Qtd": 1, "Req": "GV"},
+    {"Nome": "POSTO 4",     "Qtd": 2, "Req": "GV"}, 
+    {"Nome": "ILHA 13",     "Qtd": 1, "Req": "GV"},
+    {"Nome": "POSTO 5",     "Qtd": 2, "Req": "GV"}, 
+    {"Nome": "ILHA 11",     "Qtd": 1, "Req": "GV"},
+    {"Nome": "RIVIERA",     "Qtd": 2, "Req": "GV"}, 
+    {"Nome": "ILHA 09",     "Qtd": 1, "Req": "GV"},
+    {"Nome": "POSTO 6",     "Qtd": 2, "Req": "GV"}, 
+    {"Nome": "ILHA 07",     "Qtd": 1, "Req": "GV"},
+    {"Nome": "BARRABELA",   "Qtd": 2, "Req": "GV"}, 
+    {"Nome": "ILHA 05",     "Qtd": 1, "Req": "GV"},
+    {"Nome": "POSTO 7",     "Qtd": 2, "Req": "GV"}, 
+    {"Nome": "",            "Qtd": 0, "Req": "INDIFERENTE"}
 ]
 
 print("1️⃣  Unificando Configurações...")
@@ -113,6 +113,11 @@ arquivo_efetivo = 'inputs/efetivo.xlsx'
 if os.path.exists(arquivo_efetivo):
     df_efetivo = pd.read_excel(arquivo_efetivo)
     if 'Ala' not in df_efetivo.columns: df_efetivo['Ala'] = 'A'
+    
+    if 'Qualificacao' not in df_efetivo.columns:
+        print("⚠️ AVISO: Coluna 'Qualificacao' não encontrada. Assumindo GV.")
+        df_efetivo['Qualificacao'] = 'GV'
+        
     df_efetivo = df_efetivo.drop_duplicates(subset=['Nome_Guerra'])
 else:
     print("❌ ERRO CRÍTICO: 'efetivo.xlsx' não encontrado!")
@@ -127,27 +132,58 @@ if os.path.exists(arquivo_permutas):
     except: pass
 
 # ==============================================================================
-# PASSO 3: MOTOR LÓGICO
+# PASSO 3: MOTOR LÓGICO COM MENU DE OPÇÕES
 # ==============================================================================
-print("3️⃣  Processando Escala...")
-DATA_INICIO = '2025-12-01'
-DATA_FIM = '2025-12-01' 
+print("\n3️⃣  CONFIGURAÇÃO DA OPERAÇÃO:")
+
+# --- PERGUNTA 1: DATA INICIAL ---
+input_data = input(">> Data de Início (dd/mm/aaaa) [Enter para HOJE]: ").strip()
+if input_data:
+    try:
+        data_inicio_dt = datetime.strptime(input_data, '%d/%m/%Y')
+    except ValueError:
+        print("❌ Data inválida! Usando HOJE como padrão.")
+        data_inicio_dt = datetime.now()
+else:
+    data_inicio_dt = datetime.now()
+
+# --- PERGUNTA 2: QUANTIDADE ---
+input_qtd = input(">> Quantos dias gerar? [Enter para 1 dia]: ").strip()
+if input_qtd:
+    try:
+        dias_a_gerar = int(input_qtd)
+    except ValueError:
+        dias_a_gerar = 1
+else:
+    dias_a_gerar = 1
+
+# Calcula data final
+data_limite = data_inicio_dt + timedelta(days=dias_a_gerar - 1)
+
+print(f"\n   🔄 Processando de {data_inicio_dt.strftime('%d/%m/%Y')} até {data_limite.strftime('%d/%m/%Y')}...")
+
+# --- MARCO ZERO ---
+DATA_REFERENCIA_STR = '2025-12-01' 
+ALA_REFERENCIA = 'A'
+data_ref_dt = datetime.strptime(DATA_REFERENCIA_STR, '%Y-%m-%d')
 CICLO = ['A', 'B', 'C']
+idx_ref = CICLO.index(ALA_REFERENCIA)
 
-escala_dados = []
-relatorio_permutas = {} # <--- NOVO: Guarda o histórico do dia
-data_atual = datetime.strptime(DATA_INICIO, '%Y-%m-%d')
-data_final = datetime.strptime(DATA_FIM, '%Y-%m-%d')
-idx_ala = 0 
+data_processamento = data_inicio_dt
 
-while data_atual <= data_final:
-    dia_str = data_atual.strftime('%Y-%m-%d')
-    ala_dia = CICLO[idx_ala % 3]
+while data_processamento <= data_limite:
+    dia_str = data_processamento.strftime('%Y-%m-%d')
+    dia_br = data_processamento.strftime('%d/%m/%Y')
+    nome_arquivo_br = data_processamento.strftime('%d-%m-%Y')
+    
+    dias_passados = (data_processamento - data_ref_dt).days
+    idx_ala_atual = (idx_ref + dias_passados) % 3
+    ala_dia = CICLO[idx_ala_atual]
+    
+    print(f"   --> Gerando {dia_br} (Ala {ala_dia})...")
     
     tropa_do_dia = df_efetivo[df_efetivo['Ala'] == ala_dia].copy()
-    
-    # Inicializa lista de trocas do dia
-    relatorio_permutas[dia_str] = []
+    relatorio_permutas_dia = []
 
     if not df_permutas.empty:
         trocas_pendentes = df_permutas[df_permutas['Data'] == dia_str].to_dict('records')
@@ -164,123 +200,113 @@ while data_atual <= data_final:
                         tropa_do_dia = tropa_do_dia[tropa_do_dia['Nome_Guerra'] != quem_sai]
                         dados_entra = df_efetivo[df_efetivo['Nome_Guerra'] == quem_entra]
                         tropa_do_dia = pd.concat([tropa_do_dia, dados_entra])
-                        print(f"   ✅ TROCA ACEITA: {quem_sai} <-> {quem_entra}")
-                        
-                        # LOG PARA O PDF
-                        relatorio_permutas[dia_str].append({'Sai': quem_sai, 'Entra': quem_entra})
+                        relatorio_permutas_dia.append({'Sai': quem_sai, 'Entra': quem_entra})
                         houve_mudanca = True
                     elif quem_entra in tropa_do_dia['Nome_Guerra'].values:
-                        print(f"   ⛔ NEGADO: {quem_entra} JÁ está na escala.")
+                        pass
                     else:
                         proxima_rodada.append(troca)
-                else:
-                    print(f"   ⛔ ERRO CADASTRO: {msg}")
             trocas_pendentes = proxima_rodada
 
     disponiveis = tropa_do_dia.to_dict('records')
     random.shuffle(disponiveis)
     
     temp_alocacao = {} 
+    
     for _, posto in df_ordem_preenchimento.iterrows():
         nome_posto = posto['Nome']
         qtd_vagas = posto['Qtd']
+        req_qualificacao = posto.get('Req', 'INDIFERENTE')
         
         nomes_alocados = []
         if nome_posto != "": 
             for _ in range(qtd_vagas):
-                if len(disponiveis) > 0:
-                    militar = disponiveis.pop(0)
-                    nomes_alocados.append(militar['Nome_Guerra'])
+                candidato_escolhido = None
+                for militar in disponiveis:
+                    qualif_militar = militar.get('Qualificacao', 'GV')
+                    if req_qualificacao == 'INDIFERENTE' or req_qualificacao == qualif_militar:
+                        candidato_escolhido = militar
+                        break
+                
+                if candidato_escolhido:
+                    nomes_alocados.append(candidato_escolhido['Nome_Guerra'])
+                    disponiveis.remove(candidato_escolhido)
                 else:
-                    nomes_alocados.append("---")
+                    if req_qualificacao == 'INDIFERENTE': nomes_alocados.append("---")
+                    else: nomes_alocados.append(f"---")
+
             temp_alocacao[nome_posto] = nomes_alocados
 
-    for item in todos_postos:
-        nome = item['Nome']
-        lista_final = temp_alocacao.get(nome, ["", "", ""])
-        while len(lista_final) < 3: lista_final.append("")
-        
-        escala_dados.append({
-            'Data': dia_str, 
-            'Posto': nome, 
-            'Militares': lista_final
-        })
-    
-    data_atual += timedelta(days=1)
-    idx_ala += 1
+    # ==============================================================================
+    # PASSO 4: PDF FINAL
+    # ==============================================================================
+    class PDFPraia(FPDF):
+        def header(self):
+            self.set_font('Helvetica', 'B', 12)
+            self.cell(0, 8, 'ESCALA DE SERVIÇO - 2º GMAR', 0, 1, 'C')
+            self.ln(2)
 
-df_final = pd.DataFrame(escala_dados)
-df_matriz = df_final.pivot_table(index='Posto', columns='Data', values='Militares', aggfunc=lambda x: x)
+        def draw_box(self, titulo, conteudo, x, y, w, h):
+            self.set_xy(x, y)
+            self.set_font('Helvetica', 'B', 7)
+            self.set_fill_color(240, 240, 240)
+            self.cell(w, 5, titulo, 1, 0, 'L', fill=True)
+            self.set_xy(x, y + 5)
+            self.set_font('Helvetica', '', 7)
+            self.set_fill_color(255, 255, 255)
+            
+            texto_nomes = ""
+            if isinstance(conteudo, list):
+                nomes_limpos = [n for n in conteudo if n != "" and n != "---" and not n.startswith("FALTA")]
+                if nomes_limpos:
+                    # Remove GV visualmente
+                    nomes_sem_gv = [n.replace("GV ", "") for n in nomes_limpos]
+                    texto_nomes = " / ".join(nomes_sem_gv)
+                else:
+                    texto_nomes = "---"
+            else:
+                texto_nomes = str(conteudo).replace("GV ", "")
+            
+            if "FALTA" in str(conteudo): self.set_text_color(255, 0, 0)
+            else: self.set_text_color(0, 0, 0)
 
-# ==============================================================================
-# PASSO 4: PDF FINAL
-# ==============================================================================
-print("4️⃣  Gerando PDF Completo...")
+            self.multi_cell(w, 5, texto_nomes, 1, 'L', fill=True)
+            self.set_text_color(0, 0, 0)
 
-class PDFPraia(FPDF):
-    def header(self):
-        self.set_font('Helvetica', 'B', 12)
-        self.cell(0, 8, 'ESCALA DE SERVIÇO - 2º GMAR', 0, 1, 'C')
-        self.ln(2)
+    pdf = PDFPraia('P', 'mm', 'A4')
+    pdf.set_auto_page_break(auto=True, margin=5) 
+    x_central = 31
 
-    def draw_box(self, titulo, conteudo, x, y, w, h):
-        self.set_xy(x, y)
-        self.set_font('Helvetica', 'B', 7)
-        self.set_fill_color(240, 240, 240)
-        self.cell(w, 5, titulo, 1, 0, 'L', fill=True)
-        self.set_xy(x, y + 5)
-        self.set_font('Helvetica', '', 7)
-        self.set_fill_color(255, 255, 255)
-        texto_nomes = ""
-        if isinstance(conteudo, list):
-            nomes_limpos = [n for n in conteudo if n != "" and n != "---"]
-            texto_nomes = " / ".join(nomes_limpos)
-            if not nomes_limpos and "---" in conteudo: texto_nomes = "---"
-        else:
-            texto_nomes = str(conteudo)
-        self.multi_cell(w, 5, texto_nomes, 1, 'L', fill=True)
-
-pdf = PDFPraia('P', 'mm', 'A4')
-pdf.set_auto_page_break(auto=True, margin=5) 
-x_central = 31
-
-for data_coluna in df_matriz.columns:
     pdf.add_page()
     
-    # 1. TÍTULO
     pdf.set_font('Helvetica', 'B', 10)
     pdf.set_fill_color(200, 200, 200)
-    pdf.cell(0, 8, f"DATA: {data_coluna} (SERVIÇO DE 24H)", 1, 1, 'C', fill=True)
+    pdf.cell(0, 8, f"DATA: {dia_br} (ALA {ala_dia})", 1, 1, 'C', fill=True)
     pdf.ln(2)
 
-    # 2. CABEÇALHO (INTERNO)
     y_start = pdf.get_y()
     altura_box = 10 
     for i in range(0, len(config_interno), 2):
         if i >= len(config_interno): break
         item_esq = config_interno[i]
-        try: nomes_esq = df_matriz.loc[item_esq['Nome'], data_coluna]
-        except: nomes_esq = [""]
+        nomes_esq = temp_alocacao.get(item_esq['Nome'], ["---"])
         pdf.draw_box(item_esq['Nome'], nomes_esq, 10, y_start, 90, altura_box)
+        
         if i + 1 < len(config_interno):
             item_dir = config_interno[i+1]
-            try: nomes_dir = df_matriz.loc[item_dir['Nome'], data_coluna]
-            except: nomes_dir = [""]
+            nomes_dir = temp_alocacao.get(item_dir['Nome'], ["---"])
             pdf.draw_box(item_dir['Nome'], nomes_dir, 105, y_start, 90, altura_box)
         y_start += altura_box + 2 
 
     pdf.set_y(y_start + 5) 
 
-    # 3. PRAIA (CENTRALIZADO)
     pdf.set_font('Helvetica', 'B', 10)
     pdf.set_fill_color(50, 50, 50); pdf.set_text_color(255, 255, 255)
     pdf.cell(0, 8, "DISTRIBUIÇÃO DE PRAIA", 1, 1, 'C', fill=True)
     pdf.set_text_color(0, 0, 0)
     pdf.ln(2)
     
-    w_posto = 28
-    w_mil = 22 
-    gap = 4
+    w_posto = 28; w_mil = 22; gap = 4
     
     pdf.set_x(x_central)
     pdf.set_font('Helvetica', 'B', 6)
@@ -304,48 +330,52 @@ for data_coluna in df_matriz.columns:
                 return
             pdf.set_fill_color(240, 240, 240)
             pdf.cell(w_posto, 6, nome_posto, 1, 0, 'C', fill=True) 
-            nomes = ["", ""]
-            try:
-                lista = df_matriz.loc[nome_posto, data_coluna]
-                if isinstance(lista, list): nomes = lista
-            except: pass
-            if nomes[0] == "---": pdf.set_text_color(255, 0, 0)
-            pdf.cell(w_mil, 6, str(nomes[0]), 1, 0, 'C')
-            if nomes[1] == "---": pdf.set_text_color(255, 0, 0)
-            else: pdf.set_text_color(0, 0, 0)
-            pdf.cell(w_mil, 6, str(nomes[1]), 1, 0, 'C')
+            nomes = temp_alocacao.get(nome_posto, ["---", "---"])
+            while len(nomes) < 2: nomes.append("")
+            
+            for idx in [0, 1]:
+                txt = str(nomes[idx])
+                txt_limpo = txt.replace("GV ", "")
+                if "FALTA" in txt:
+                    pdf.set_text_color(255, 0, 0)
+                    pdf.set_font('Helvetica', 'B', 5)
+                    pdf.cell(w_mil, 6, txt_limpo, 1, 0, 'C')
+                elif txt == "---":
+                    pdf.set_text_color(200, 200, 200)
+                    pdf.set_font('Helvetica', '', 7)
+                    pdf.cell(w_mil, 6, txt_limpo, 1, 0, 'C')
+                else:
+                    pdf.set_text_color(0, 0, 0)
+                    pdf.set_font('Helvetica', '', 7)
+                    pdf.cell(w_mil, 6, txt_limpo, 1, 0, 'C')
         desenhar_lado(posto_esq)
         pdf.cell(gap, 6, "", 0, 0)
         desenhar_lado(posto_dir)
         pdf.ln() 
 
-    # 4. TABELA DE PERMUTAS (NOVO RODAPÉ)
-    pdf.ln(5) # Espaço
-    trocas_do_dia = relatorio_permutas.get(data_coluna, [])
-    
-    if trocas_do_dia:
+    pdf.ln(5) 
+    if relatorio_permutas_dia:
         pdf.set_font('Helvetica', 'B', 10)
         pdf.set_fill_color(50, 50, 50); pdf.set_text_color(255, 255, 255)
         pdf.cell(0, 6, "ALTERAÇÕES / PERMUTAS DO DIA", 1, 1, 'L', fill=True)
-        
-        pdf.set_text_color(0, 0, 0)
-        pdf.set_font('Helvetica', 'B', 7)
-        pdf.set_fill_color(220, 220, 220)
-        
-        # Cabeçalho da Tabela Permutas
-        w_sai = 95
-        w_entra = 95
-        pdf.cell(w_sai, 5, "SAI (TITULAR)", 1, 0, 'C', fill=True)
-        pdf.cell(w_entra, 5, "ENTRA (SUBSTITUTO)", 1, 1, 'C', fill=True)
-        
+        pdf.set_text_color(0, 0, 0); pdf.set_font('Helvetica', 'B', 7); pdf.set_fill_color(220, 220, 220)
+        pdf.cell(95, 5, "SAI (TITULAR)", 1, 0, 'C', fill=True)
+        pdf.cell(95, 5, "ENTRA (SUBSTITUTO)", 1, 1, 'C', fill=True)
         pdf.set_font('Helvetica', '', 7)
-        for troca in trocas_do_dia:
-            pdf.cell(w_sai, 5, troca['Sai'], 1, 0, 'C')
-            pdf.cell(w_entra, 5, troca['Entra'], 1, 1, 'C')
+        for troca in relatorio_permutas_dia:
+            sai_limpo = troca['Sai'].replace("GV ", "")
+            entra_limpo = troca['Entra'].replace("GV ", "")
+            pdf.cell(95, 5, sai_limpo, 1, 0, 'C')
+            pdf.cell(95, 5, entra_limpo, 1, 1, 'C')
     else:
-        # Se não houver permutas, mostra aviso discreto
         pdf.set_font('Helvetica', 'I', 8)
         pdf.cell(0, 6, "Sem permutas registradas para esta data.", 0, 1, 'C')
 
-pdf.output('outputs/escala_praia_FINAL.pdf')
-print("\n✅ SUCESSO! PDF V2.7 Gerado (Com Tabela de Permutas).")
+    caminho_arquivo = f"outputs/Escala_{nome_arquivo_br}.pdf"
+    pdf.output(caminho_arquivo)
+    print(f"   ✅ Gerado: {caminho_arquivo}")
+
+    data_processamento += timedelta(days=1)
+
+print("\n🚀 PROCESSO CONCLUÍDO!")
+input("Pressione ENTER para fechar...")

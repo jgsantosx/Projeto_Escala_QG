@@ -1,110 +1,68 @@
-# 🎖️ Automação de Escala de Serviço - 2º GMAR (V2.7)
+# 🎖️ Automação de Escala de Serviço - 2º GMAR (V3.2)
 
-Este projeto é uma ferramenta desenvolvida em Python para automatizar a geração da **Escala de Praia** (Serviço Operacional). O sistema gerencia o ciclo 12x60, processa permutas automaticamente (com validação de regras) e gera um PDF formatado com layout oficial.
+Ferramenta desenvolvida em Python para automatizar a geração da **Escala de Praia** (Serviço Operacional). O sistema gerencia o ciclo 12x60, processa permutas, respeita qualificações (OF, SGT, MOT, GV) e gera PDFs formatados.
 
-## 🚀 Novidades da Versão 2.7
+## 🚀 Novidades da Versão 3.2
 
-- **📄 Layout Completo e Profissional:**
-  - **Cabeçalho:** Inclui escala de Serviço Interno (Oficiais, Motoristas, Prontidão).
-  - **Visual:** Tabela centralizada na folha A4 com destaque visual (fundo cinza) nos postos.
-  - **Rodapé:** Tabela automática listando as permutas realizadas no dia ("Quem Saiu" vs "Quem Entrou").
-- **🔄 Sistema de Permutas Inteligente (Multi-pass):**
-  - O robô lê o arquivo `permutas.xlsx`, aceita trocas em qualquer ordem (resolve trocas casadas) e valida regras de negócio.
-- **🧠 Distribuição Híbrida:**
-  - **Prioridade VIP:** Postos críticos são garantidos primeiro.
-  - **Ordem Geográfica:** O restante segue a ordem natural da praia.
+- **🎮 Menu Interativo:** Ao iniciar, o sistema pergunta:
+  - _Data Inicial:_ Você escolhe quando começar.
+  - _Quantidade:_ Você define quantos dias gerar (1 dia, 1 semana, etc.).
+- **👮 Distribuição por Qualificação:**
+  - O robô lê a coluna `Qualificacao` no Excel.
+  - Só escala Oficiais para chefia, Motoristas para viaturas e GVs para a praia.
+  - Se faltar especialista, alerta no PDF (`FALTA MOT`).
+- **✨ Visual Limpo:** Removeu prefixos repetitivos (ex: "GV") do PDF, mantendo apenas a graduação e nome.
 
-## 🛠️ Funcionalidades Principais
+## 🛠️ Funcionalidades
 
-- **Ciclo Automático:** Calcula a Ala de serviço (A, B ou C) baseado na data.
-- **Efetivo Flexível:** Controle total de vagas por posto via configuração (`config_praia` e `config_interno`).
-- **Relatório de Alterações:** Tabela detalhada no final do PDF mostrando as trocas efetivadas.
+- **Ciclo Automático:** Calcula a Ala (A, B, C) baseado na data escolhida.
+- **Permutas Inteligentes:** Resolve trocas "casadas" (A substitui B, C substitui A) automaticamente.
+- **Layout Oficial:** PDF centralizado, com cabeçalho de Serviço Interno e rodapé de alterações.
 
 ## 📂 Estrutura de Arquivos
 
-````text
+```text
 Projeto_Escala_QG/
 │
 ├── inputs/
-│   ├── efetivo.xlsx        # Colunas: Nome_Guerra, Ala
+│   ├── efetivo.xlsx        # Colunas: Nome_Guerra, Ala, Qualificacao (NOVO!)
 │   └── permutas.xlsx       # Colunas: Data, Sai_Nome, Entra_Nome
 │
 ├── outputs/
-│   └── escala_praia_FINAL.pdf  # O resultado gerado
+│   └── Escala_DD-MM-AAAA.pdf  # Arquivos gerados
 │
-├── gerador_escala.py       # Motor Lógico Completo (V2.7)
-├── README.md               # Documentação
-└── .gitignore              # Arquivos ignorados
+├── gerador_escala.py       # Motor Lógico V3.2
+├── GeradorEscalaGMAR.exe   # Executável (Opcional)
+└── README.md               # Documentação
 ⚙️ Como Configurar
-1. Instalação
-Necessário Python 3.x e as bibliotecas:
+1. Excel de Efetivo (inputs/efetivo.xlsx)
+Deve conter a coluna Qualificacao com as siglas:
 
-Bash
+OF: Oficiais
 
-pip install pandas openpyxl fpdf
-2. Preparando a Escala
-Efetivo: Atualize o inputs/efetivo.xlsx com a tropa atual.
+SGT: Sargentos/Subtenentes
 
-Permutas: Se houver trocas, preencha inputs/permutas.xlsx (Data YYYY-MM-DD).
+MOT: Motoristas
 
-Regras: No arquivo gerador_escala.py, você pode editar:
+COM: Comunicação
 
-config_interno: Postos da parte superior (Oficiais, Motoristas).
+GV: Guarda-Vidas (Padrão)
 
-config_praia: Postos da praia e quantidades.
+2. Regras de Negócio (gerador_escala.py)
+No início do código, você pode ajustar:
 
-lista_prioridade_alta: Postos que têm preferência no preenchimento.
+config_interno e config_praia: Quantidade e Requisito (Req) de cada posto.
+
+lista_prioridade_alta: Postos que são preenchidos primeiro.
 
 ▶️ Como Rodar
-Execute o script no terminal:
+Execute o script ou o .exe.
 
-Bash
+Responda as perguntas no terminal:
 
-python gerador_escala.py
-O robô informará no terminal as trocas realizadas e gerará o PDF na pasta outputs/.
+>> Data de Início [Enter para HOJE]: >> Quantos dias gerar? [Enter para 1]:
 
-🚧 Próximos Passos (Roadmap)
-[x] Cabeçalho Completo: Escala de Oficiais e Motoristas (Implementado na V2.5).
-
-[x] Relatório de Permutas: Tabela no rodapé (Implementado na V2.7).
-
-[ ] Compilação (.exe): Transformar o script em executável para rodar sem Python.
-
-[ ] Interface Gráfica (GUI): Criar janelas para facilitar o uso.
-
-[ ] Versão 3.0 (Futuro): Implementar distribuição por Antiguidade (Patente).
+Pegue seu PDF na pasta outputs.
 
 Desenvolvido para automação administrativa militar.
-
-
----
-
-### 2. Atualizar o GitHub
-
-Agora vamos salvar essa documentação junto com o código V2.7 que você já finalizou.
-
-No terminal:
-
-1.  **Adicionar:**
-    ```powershell
-    git add .
-    ```
-
-2.  **Commit (Oficializando a V2.7):**
-    ```powershell
-    git commit -m "Docs: Atualiza README para V2.7 (Layout Completo e Rodape de Permutas)"
-    ```
-
-3.  **Enviar:**
-    ```powershell
-    git push
-    ```
-
-    
-
-Assim que subir, seu projeto estará "Passado a Limpo".
-
-Com o projeto salvo, **qual sua ordem para a próxima etapa?**
-1.  Gerar o `.exe` (para você poder mandar o programa para outros computadores)?
-2.  Ou iniciar a Interface Gráfica (janelas)?
-````
+```
