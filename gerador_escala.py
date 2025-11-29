@@ -1,12 +1,11 @@
 import pandas as pd
 import random
 import os
-import warnings # <--- O SILENCIADOR
+import warnings
 from datetime import datetime, timedelta
 from fpdf import FPDF
 
 # --- CONFIGURAÇÃO DE SILÊNCIO ---
-# Ignora avisos de versão (Deprecation) para limpar o terminal
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 warnings.filterwarnings("ignore", category=UserWarning)
 
@@ -14,16 +13,25 @@ warnings.filterwarnings("ignore", category=UserWarning)
 if not os.path.exists('inputs'): os.makedirs('inputs')
 if not os.path.exists('outputs'): os.makedirs('outputs')
 
-print("🚀 INICIANDO SISTEMA DE ESCALA (VERSÃO 2.1 - CLEAN)...")
+print("🚀 INICIANDO SISTEMA DE ESCALA (V2.4 - PERMUTA QUALQUER ORDEM)...")
 
 # ==============================================================================
-# PASSO 1: CONFIGURAÇÃO (VISUAL, QUANTIDADE E PRIORIDADE)
+# 🧠 O JUIZ DAS PERMUTAS
 # ==============================================================================
+def validar_cadastro(nome_sai, nome_entra, df_efetivo):
+    dados_sai = df_efetivo[df_efetivo['Nome_Guerra'] == nome_sai]
+    dados_entra = df_efetivo[df_efetivo['Nome_Guerra'] == nome_entra]
+    
+    if dados_sai.empty: return False, f"Militar {nome_sai} não encontrado."
+    if dados_entra.empty: return False, f"Militar {nome_entra} não encontrado."
+    
+    return True, "Ok"
 
-# A. LISTA DE PRIORIDADE ALTA (VIP)
+# ==============================================================================
+# PASSO 1: CONFIGURAÇÃO
+# ==============================================================================
 lista_prioridade_alta = ["POSTO 3", "QUEBRA MAR"] 
 
-# B. ORDEM GEOGRÁFICA PADRÃO
 ORDEM_GEOGRAFICA = [
     "JOATINGA", "CANAL 1", "CANAL 2", "QUEBRA MAR", "POSTO 1", 
     "TROPICAL", "BOBS", "POSTO 2", "FAROL", "POSTO 3", 
@@ -34,7 +42,6 @@ ORDEM_GEOGRAFICA = [
     "ILHA 07", "ILHA 05"
 ]
 
-# C. CONFIGURAÇÃO VISUAL E DE QUANTIDADE
 config_postos = [
     {"Nome": "JOATINGA",    "Qtd": 2}, 
     {"Nome": "POSTO 8",     "Qtd": 2},
@@ -86,9 +93,8 @@ df_ordem_preenchimento = df_config.sort_values('Ordem_Matematica')
 # ==============================================================================
 # PASSO 2: LEITURA DO EFETIVO E PERMUTAS
 # ==============================================================================
-print("2️⃣  Lendo Arquivos (Efetivo + Permutas)...")
+print("2️⃣  Lendo Arquivos...")
 
-# Leitura do Efetivo
 arquivo_efetivo = 'inputs/efetivo.xlsx'
 if os.path.exists(arquivo_efetivo):
     df_efetivo = pd.read_excel(arquivo_efetivo)
@@ -98,7 +104,6 @@ else:
     print("❌ ERRO CRÍTICO: 'efetivo.xlsx' não encontrado!")
     exit()
 
-# Leitura das Permutas
 arquivo_permutas = 'inputs/permutas.xlsx'
 df_permutas = pd.DataFrame() 
 if os.path.exists(arquivo_permutas):
@@ -107,14 +112,14 @@ if os.path.exists(arquivo_permutas):
         df_permutas['Data'] = pd.to_datetime(df_permutas['Data']).dt.strftime('%Y-%m-%d')
         print(f"   -> {len(df_permutas)} permutas carregadas.")
     except Exception as e:
-        print(f"⚠️ Aviso: Erro ao ler permutas ({e}). Seguindo sem trocas.")
+        print(f"⚠️ Aviso: Erro ao ler permutas ({e}).")
 else:
-    print("⚠️ Aviso: Arquivo 'permutas.xlsx' não existe. Nenhuma troca será feita.")
+    print("⚠️ Aviso: 'permutas.xlsx' não existe.")
 
 # ==============================================================================
-# PASSO 3: MOTOR LÓGICO
+# PASSO 3: MOTOR LÓGICO COM CICLO DE TENTATIVAS (NOVO!)
 # ==============================================================================
-print("3️⃣  Processando Escala e Trocas...")
+print("3️⃣  Processando Escala...")
 DATA_INICIO = '2025-12-01'
 DATA_FIM = '2025-12-01' 
 CICLO = ['A', 'B', 'C']
@@ -128,33 +133,61 @@ while data_atual <= data_final:
     dia_str = data_atual.strftime('%Y-%m-%d')
     ala_dia = CICLO[idx_ala % 3]
     
-    # A. Filtra Tropa do Dia
     tropa_do_dia = df_efetivo[df_efetivo['Ala'] == ala_dia].copy()
     
-    # B. Aplica Permutas
+    # --- NOVO BLOCO: RESOLUÇÃO DE PERMUTAS EM LOOP ---
     if not df_permutas.empty:
-        trocas_hoje = df_permutas[df_permutas['Data'] == dia_str]
+        # Pega todas as trocas do dia e converte para lista
+        trocas_pendentes = df_permutas[df_permutas['Data'] == dia_str].to_dict('records')
         
-        for _, troca in trocas_hoje.iterrows():
-            quem_sai = troca['Sai_Nome']
-            quem_entra = troca['Entra_Nome']
+        # Variável de controle para não ficar em loop infinito
+        houve_mudanca = True
+        
+        while houve_mudanca and len(trocas_pendentes) > 0:
+            houve_mudanca = False # Reseta a cada rodada
+            proxima_rodada = []   # Lista para guardar quem falhar agora
             
-            if quem_sai in tropa_do_dia['Nome_Guerra'].values:
-                tropa_do_dia = tropa_do_dia[tropa_do_dia['Nome_Guerra'] != quem_sai]
-                print(f"   🔄 TROCA REALIZADA: Saiu {quem_sai}")
-            
-            dados_entra = df_efetivo[df_efetivo['Nome_Guerra'] == quem_entra]
-            if not dados_entra.empty:
-                tropa_do_dia = pd.concat([tropa_do_dia, dados_entra])
-                print(f"   🔄 TROCA REALIZADA: Entrou {quem_entra}")
-            else:
-                print(f"   ⚠️ ERRO: {quem_entra} não está no cadastro de efetivo!")
+            for troca in trocas_pendentes:
+                quem_sai = troca['Sai_Nome']
+                quem_entra = troca['Entra_Nome']
+                
+                # Valida cadastro
+                cadastro_ok, msg = validar_cadastro(quem_sai, quem_entra, df_efetivo)
+                
+                if cadastro_ok:
+                    # TENTA APLICAR A TROCA
+                    if quem_sai in tropa_do_dia['Nome_Guerra'].values:
+                        # Achou quem sai! Executa.
+                        tropa_do_dia = tropa_do_dia[tropa_do_dia['Nome_Guerra'] != quem_sai]
+                        dados_entra = df_efetivo[df_efetivo['Nome_Guerra'] == quem_entra]
+                        tropa_do_dia = pd.concat([tropa_do_dia, dados_entra])
+                        
+                        print(f"   ✅ TROCA ACEITA: {quem_sai} <-> {quem_entra}")
+                        houve_mudanca = True # Marcamos que algo aconteceu, então vale a pena tentar de novo
+                    
+                    elif quem_entra in tropa_do_dia['Nome_Guerra'].values:
+                        print(f"   ⛔ NEGADO: {quem_entra} JÁ está na escala.")
+                    
+                    else:
+                        # Se quem sai NÃO está na lista, pode ser que ele entre numa próxima permuta.
+                        # Guardamos para tentar na próxima rodada do loop.
+                        proxima_rodada.append(troca)
+                else:
+                    print(f"   ⛔ ERRO CADASTRO: {msg}")
 
-    # C. Converte para lista e embaralha
+            # Atualiza a lista de pendentes para a próxima tentativa
+            trocas_pendentes = proxima_rodada
+        
+        # Se saiu do loop e ainda tem pendências, é porque não tem jeito mesmo
+        if len(trocas_pendentes) > 0:
+            for t in trocas_pendentes:
+                print(f"   ⚠️ ALERTA: Não foi possível trocar {t['Sai_Nome']}. Ele não estava na escala final.")
+
+    # C. Embaralha
     disponiveis = tropa_do_dia.to_dict('records')
     random.shuffle(disponiveis)
     
-    # D. Loop de Preenchimento
+    # D. Preenchimento
     temp_alocacao = {} 
     
     for _, posto in df_ordem_preenchimento.iterrows():
@@ -171,7 +204,7 @@ while data_atual <= data_final:
                     nomes_alocados.append("---")
             temp_alocacao[nome_posto] = nomes_alocados
 
-    # E. Organiza para Visualização
+    # E. Organiza
     for item in config_postos:
         nome = item['Nome']
         if nome in temp_alocacao:
@@ -199,7 +232,6 @@ print("4️⃣  Gerando PDF...")
 
 class PDFPraia(FPDF):
     def header(self):
-        # Alterei para Helvetica para evitar avisos de fonte
         self.set_font('Helvetica', 'B', 10)
         self.cell(0, 8, 'ESCALA DE PRAIA - 2 GMAR', 0, 1, 'C')
         self.ln(2)
@@ -262,4 +294,4 @@ for data_coluna in df_matriz.columns:
         pdf.ln() 
 
 pdf.output('outputs/escala_praia_FINAL.pdf')
-print("\n✅ SUCESSO! PDF gerado e terminal limpo.")
+print("\n✅ SUCESSO! PDF gerado.")
