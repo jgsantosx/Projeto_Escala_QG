@@ -100,6 +100,8 @@ No terminal:
     git push
     ```
 
+    
+
 Assim que subir, seu projeto estará "Passado a Limpo".
 
 Com o projeto salvo, **qual sua ordem para a próxima etapa?**

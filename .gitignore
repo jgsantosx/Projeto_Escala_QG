@@ -15,6 +15,10 @@ Thumbs.db
 # Se for só teste, pode deixar comentado (#)
 # inputs/efetivo.xlsx
 
+# Ignorar arquivos de compilação (PyInstaller)
+build/
+dist/
+*.spec
 # Ignorar credenciais (se formos usar Google API no futuro)
 credentials/*.json
 token.json
